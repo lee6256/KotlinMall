@@ -12,7 +12,7 @@ import org.jetbrains.anko.toast
 
 class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView {
     override fun onRegisterResult(result: Boolean) {
-        toast("注册成功")
+        toast("注册成功rx")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView {
         mPresenter.mView = this
 
         mRegisterBtn.setOnClickListener {
-            mPresenter.register("", "")
+            mPresenter.register(mMobileEt.text.toString(), mPwdEt.text.toString(), mVerifyCodeEt.text.toString())
         }
     }
 }
