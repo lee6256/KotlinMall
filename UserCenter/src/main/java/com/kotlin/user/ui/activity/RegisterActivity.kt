@@ -1,8 +1,8 @@
 package com.kotlin.user.ui.activity
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import com.kotlin.base.common.AppManager
+import com.kotlin.base.ext.onClick
 import com.kotlin.base.ui.activity.BaseMvpActivity
 import com.kotlin.user.R
 import com.kotlin.user.injection.component.DaggerUserComponent
@@ -14,27 +14,36 @@ import org.jetbrains.anko.toast
 
 class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView {
 
-    override fun onRegisterResult(result: Boolean) {
-        toast("注册成功rx")
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-
-        initInjection()
-
-        mRegisterBtn.setOnClickListener {
-            mPresenter.register(mMobileEt.text.toString(), mPwdEt.text.toString(), mVerifyCodeEt.text.toString())
-        }
-    }
-
-    private fun initInjection() {
+    private var pressTime: Long = 0
+    override fun injectComponent() {
         DaggerUserComponent.builder()
                 .activityComponent(activityComponent)
                 .userModule(UserModule())
                 .build()
                 .inject(this)
         mPresenter.mView = this
+    }
+
+    override fun onRegisterResult(result: String) {
+        toast(result)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register)
+
+        mRegisterBtn.onClick {
+            mPresenter.register(mMobileEt.text.toString(), mPwdEt.text.toString(), mVerifyCodeEt.text.toString())
+        }
+    }
+
+    override fun onBackPressed() {
+        val time = System.currentTimeMillis()
+        if (time - pressTime > 2000) {
+            toast("再点击一次退出")
+            pressTime = time
+        } else {
+            AppManager.instance.exitApp(this)
+        }
     }
 }
