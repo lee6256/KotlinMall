@@ -8,6 +8,7 @@ import com.kotlin.base.injection.module.ActivityModule
 import com.kotlin.base.injection.module.LifecycleProviderModule
 import com.kotlin.base.presenter.BasePresenter
 import com.kotlin.base.presenter.view.BaseView
+import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 /**
@@ -22,6 +23,7 @@ abstract class BaseMvpFragment<T: BasePresenter<*>>: BaseFragment(), BaseView {
     }
 
     override fun onError(text: String) {
+        toast(text)
     }
 
     @Inject
