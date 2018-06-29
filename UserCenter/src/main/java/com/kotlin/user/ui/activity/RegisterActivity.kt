@@ -1,7 +1,9 @@
 package com.kotlin.user.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import com.kotlin.base.common.AppManager
+import com.kotlin.base.ext.enable
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.ui.activity.BaseMvpActivity
 import com.kotlin.user.R
@@ -12,8 +14,7 @@ import com.kotlin.user.presenter.view.RegisterView
 import kotlinx.android.synthetic.main.activity_register.*
 import org.jetbrains.anko.toast
 
-class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView {
-
+class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView, View.OnClickListener {
     private var pressTime: Long = 0
     override fun injectComponent() {
         DaggerUserComponent.builder()
@@ -32,9 +33,17 @@ class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        mRegisterBtn.onClick {
-            mPresenter.register(mMobileEt.text.toString(), mPwdEt.text.toString(), mVerifyCodeEt.text.toString())
-        }
+        initView()
+    }
+
+    private fun initView() {
+        mRegisterBtn.enable(mMobileEt, { isBtnEnable() } )
+        mRegisterBtn.enable(mVerifyCodeEt, { isBtnEnable() } )
+        mRegisterBtn.enable(mPwdEt, { isBtnEnable() } )
+        mRegisterBtn.enable(mPwdConfirmEt, { isBtnEnable() } )
+
+        mVerifyCodeBtn.onClick(this)
+        mRegisterBtn.onClick(this)
     }
 
     override fun onBackPressed() {
@@ -45,5 +54,24 @@ class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView {
         } else {
             AppManager.instance.exitApp(this)
         }
+    }
+
+    override fun onClick(v: View) {
+        when(v.id) {
+            R.id.mVerifyCodeBtn -> {
+                mVerifyCodeBtn.requestSendVerifyNumber()
+            }
+            R.id.mRegisterBtn -> {
+                mPresenter.register(mMobileEt.text.toString(), mPwdEt.text.toString(), mVerifyCodeEt.text.toString())
+            }
+        }
+    }
+
+    private fun isBtnEnable(): Boolean {
+        return mMobileEt.text.isNullOrEmpty().not() &&
+                mVerifyCodeEt.text.isNullOrEmpty().not() &&
+                mPwdEt.text.isNullOrEmpty().not() &&
+                mPwdConfirmEt.text.isNullOrEmpty().not()
+
     }
 }

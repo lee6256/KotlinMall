@@ -16,7 +16,6 @@ class RegisterPresenter @Inject constructor(): BasePresenter<RegisterView>() {
     lateinit var userService: UserService
 
     fun register(mobile: String, pwd: String, verifyCode: String) {
-
         if (!checkNetWork()) {
             println("无网络")
         }
