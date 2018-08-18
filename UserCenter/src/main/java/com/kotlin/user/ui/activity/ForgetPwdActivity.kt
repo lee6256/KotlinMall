@@ -6,15 +6,14 @@ import com.kotlin.base.ext.enable
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.ui.activity.BaseMvpActivity
 import com.kotlin.user.R
-import com.kotlin.user.data.protocol.UserInfo
 import com.kotlin.user.injection.component.DaggerUserComponent
 import com.kotlin.user.injection.module.UserModule
-import com.kotlin.user.presenter.LoginPresenter
-import com.kotlin.user.presenter.view.LoginView
-import kotlinx.android.synthetic.main.activity_login.*
-import org.jetbrains.anko.startActivity
+import com.kotlin.user.presenter.ForgetPwdPresenter
+import com.kotlin.user.presenter.view.ForgetPwdView
+import kotlinx.android.synthetic.main.activity_forget_pwd.*
+import org.jetbrains.anko.toast
 
-class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClickListener {
+class ForgetPwdActivity : BaseMvpActivity<ForgetPwdPresenter>(), ForgetPwdView, View.OnClickListener {
 
     override fun injectComponent() {
         DaggerUserComponent.builder()
@@ -25,36 +24,34 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
         mPresenter.mView = this
     }
 
-    override fun onLoginResult(result: UserInfo) {
-
+    override fun onForgetPwdResult(result: String) {
+        toast(result)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_forget_pwd)
 
         initView()
     }
 
     private fun initView() {
-        mLoginBtn.enable(mMobileEt, { isBtnEnable() } )
-        mLoginBtn.enable(mPwdEt, { isBtnEnable() } )
+        mNextBtn.enable(mMobileEt, { isBtnEnable() } )
+        mNextBtn.enable(mVerifyCodeEt, { isBtnEnable() } )
 
-        mLoginBtn.onClick(this)
-        mForgetPwdTv.onClick(this)
-        mHeaderBar.getRightText().onClick(this)
+        mNextBtn.onClick(this)
+        mVerifyCodeBtn.onClick(this)
     }
 
     override fun onClick(v: View) {
         when(v.id) {
-            R.id.mRightTv -> { startActivity<RegisterActivity>() }
-            R.id.mForgetPwdTv -> { startActivity<ForgetPwdActivity>() }
-            R.id.mLoginBtn -> { mPresenter.login(mMobileEt.text.toString(), mPwdEt.text.toString(), "") }
+            R.id.mNextBtn -> { mPresenter.forgetPwd(mMobileEt.text.toString(), mVerifyCodeEt.text.toString()) }
+            R.id.mVerifyCodeBtn -> { mVerifyCodeBtn.requestSendVerifyNumber() }
         }
     }
 
     private fun isBtnEnable(): Boolean {
         return mMobileEt.text.isNullOrEmpty().not() &&
-                mPwdEt.text.isNullOrEmpty().not()
+                mVerifyCodeEt.text.isNullOrEmpty().not()
     }
 }
