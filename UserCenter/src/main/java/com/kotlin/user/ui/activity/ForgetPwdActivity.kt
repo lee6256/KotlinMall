@@ -11,6 +11,7 @@ import com.kotlin.user.injection.module.UserModule
 import com.kotlin.user.presenter.ForgetPwdPresenter
 import com.kotlin.user.presenter.view.ForgetPwdView
 import kotlinx.android.synthetic.main.activity_forget_pwd.*
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 class ForgetPwdActivity : BaseMvpActivity<ForgetPwdPresenter>(), ForgetPwdView, View.OnClickListener {
@@ -26,6 +27,7 @@ class ForgetPwdActivity : BaseMvpActivity<ForgetPwdPresenter>(), ForgetPwdView, 
 
     override fun onForgetPwdResult(result: String) {
         toast(result)
+        startActivity<ResetPwdActivity>("mobile" to mMobileEt.text.toString())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
