@@ -12,7 +12,6 @@ import javax.inject.Inject
  * Created by HelloWorld on 2018/5/27.
  */
 class UserServiceImpl @Inject constructor(): UserService {
-
     @Inject
     lateinit var repository: UserRepository
 
@@ -32,4 +31,9 @@ class UserServiceImpl @Inject constructor(): UserService {
     override fun resetPwd(mobile: String, pwd: String): Observable<Boolean> {
         return repository.forgetPwd(mobile, pwd).convertBoolean()
     }
+
+    override fun editUser(userIcon: String, userName: String, userGender: String, userSign: String): Observable<UserInfo> {
+        return repository.editUser(userIcon, userName, userGender, userSign).convert()
+    }
+
 }
