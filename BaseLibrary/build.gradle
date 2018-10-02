@@ -65,4 +65,7 @@ dependencies {
     api "com.jph.takephoto:takephoto_library:${take_photo_version}"
     //Alert View
     api "com.bigkoo:alertview:${alert_view_version}"
+
+    compile 'com.qiniu:qiniu-android-sdk:7.3.+'
+    compile 'com.qiniu:qiniu-java-sdk:7.2.+'
 }
