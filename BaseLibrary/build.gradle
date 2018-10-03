@@ -4,13 +4,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 26
-
-
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 26
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode 1
         versionName "1.0"
 
@@ -28,13 +27,17 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.0.0-beta1'
-    api 'com.android.support:recyclerview-v7:26.0.0-beta1'
+    api fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:0.5'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
 
+    //Android Support
+    api "com.android.support:support-v4:${android_support_version}"
+    api "com.android.support:appcompat-v7:${android_support_version}"
+    api "com.android.support:recyclerview-v7:${android_support_version}"
+    api "com.android.support:cardview-v7:${android_support_version}"
+    api "com.android.support:design:${android_support_version}"
     // kotlin
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
     // Anko Commons
@@ -72,4 +75,8 @@ dependencies {
     compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.5'
     // Banner
     compile 'com.youth.banner:banner:1.4.10'
+    // 标签
+    compile 'com.github.shts:TriangleLabelView:1.1.2'
+    // 画廊
+    compile 'com.github.crosswall:Android-Coverflow:release-v1.0.5'
 }
