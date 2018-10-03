@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
@@ -29,6 +30,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.0.0-beta1'
+    api 'com.android.support:recyclerview-v7:26.0.0-beta1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:0.5'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
@@ -37,6 +39,7 @@ dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
     // Anko Commons
     api "org.jetbrains.anko:anko-commons:${anko_version}"
+    api "org.jetbrains.anko:anko-support-v4-commons:${anko_version}"
     // Anko Layouts
     api "org.jetbrains.anko:anko-sdk25:${anko_version}" // sdk15, sdk19, sdk21, sdk23 are also available
     // RxKotlin, RxAndroid
@@ -51,4 +54,18 @@ dependencies {
     // dagger2
     api "com.google.dagger:dagger:${dagger_version}"
     kapt "com.google.dagger:dagger-compiler:${dagger_version}"
+    // RxLifecycle
+    api "com.trello:rxlifecycle-kotlin:${rx_lifecycle_version}"
+    api "com.trello:rxlifecycle-components:${rx_lifecycle_version}"
+    // Glide
+    api "com.github.bumptech.glide:glide:${glide_version}"
+    //Circle ImageView
+    api "de.hdodenhof:circleimageview:${circle_imageView_version}"
+    //Take Photo
+    api "com.jph.takephoto:takephoto_library:${take_photo_version}"
+    //Alert View
+    api "com.bigkoo:alertview:${alert_view_version}"
+
+    compile 'com.qiniu:qiniu-android-sdk:7.3.+'
+    compile 'com.qiniu:qiniu-java-sdk:7.2.+'
 }

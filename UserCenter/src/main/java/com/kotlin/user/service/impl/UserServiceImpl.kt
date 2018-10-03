@@ -1,32 +1,39 @@
 package com.kotlin.user.service.impl
 
-import com.kotlin.base.data.protocol.BaseResp
-import com.kotlin.base.rx.BaseException
+import com.kotlin.base.ext.convert
+import com.kotlin.base.ext.convertBoolean
+import com.kotlin.user.data.protocol.UserInfo
 import com.kotlin.user.data.repository.UserRepository
 import com.kotlin.user.service.UserService
 import rx.Observable
-import rx.functions.Func1
 import javax.inject.Inject
 
 /**
  * Created by HelloWorld on 2018/5/27.
  */
 class UserServiceImpl @Inject constructor(): UserService {
-
     @Inject
     lateinit var repository: UserRepository
 
     override fun register(mobile: String, pwd: String, verifyCode: String): Observable<Boolean> {
         // 网络请求
-
-        return repository.register(mobile, pwd, verifyCode)
-                .flatMap(object : Func1<BaseResp<String>, Observable<Boolean>> {
-                    override fun call(t: BaseResp<String>): Observable<Boolean> {
-                        if (t.status != 0) {
-                            return Observable.error(BaseException(t.status, t.message))
-                        }
-                        return Observable.just(true)
-                    }
-                })
+        return repository.register(mobile, pwd, verifyCode).convertBoolean()
     }
+
+    override fun login(mobile: String, pwd: String, pushId: String): Observable<UserInfo> {
+        return repository.login(mobile, pwd, pushId).convert()
+    }
+
+    override fun forgetPwd(mobile: String, verifyCode: String): Observable<Boolean> {
+        return repository.forgetPwd(mobile, verifyCode).convertBoolean()
+    }
+
+    override fun resetPwd(mobile: String, pwd: String): Observable<Boolean> {
+        return repository.forgetPwd(mobile, pwd).convertBoolean()
+    }
+
+    override fun editUser(userIcon: String, userName: String, userGender: String, userSign: String): Observable<UserInfo> {
+        return repository.editUser(userIcon, userName, userGender, userSign).convert()
+    }
+
 }
