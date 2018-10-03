@@ -65,7 +65,9 @@ dependencies {
     api "com.jph.takephoto:takephoto_library:${take_photo_version}"
     //Alert View
     api "com.bigkoo:alertview:${alert_view_version}"
-
+    //七牛云
     compile 'com.qiniu:qiniu-android-sdk:7.3.+'
     compile 'com.qiniu:qiniu-java-sdk:7.2.+'
+    // BottomNavigation
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.5'
 }
