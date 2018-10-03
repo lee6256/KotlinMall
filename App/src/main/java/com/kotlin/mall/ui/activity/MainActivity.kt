@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.kotlin.mall.R
 import com.kotlin.mall.ui.fragment.HomeFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,6 +12,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mBottomNavBar.checkCartBadge(10)
+        mBottomNavBar.checkMsgBadge(false)
         initView()
     }
 

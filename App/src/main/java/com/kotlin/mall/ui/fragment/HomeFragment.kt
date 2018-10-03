@@ -25,6 +25,7 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBanner()
+        initNews()
     }
 
     private fun initBanner() {
@@ -34,5 +35,9 @@ class HomeFragment : BaseFragment() {
         mHomeBanner.setIndicatorGravity(BannerConfig.RIGHT)
         mHomeBanner.setDelayTime(5000)
         mHomeBanner.start()
+    }
+
+    private fun initNews() {
+        mFlipperView.setData(arrayOf("123", "456"))
     }
 }
