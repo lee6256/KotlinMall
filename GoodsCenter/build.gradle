@@ -35,4 +35,6 @@ dependencies {
     })
 
     implementation project(':Provider')
+    // dagger2
+    kapt "com.google.dagger:dagger-compiler:${dagger_version}"
 }

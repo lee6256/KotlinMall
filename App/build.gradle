@@ -35,4 +35,5 @@ dependencies {
         implementation project(':UserCenter')
     }
     api project(':MessageCenter')
+    api project(':GoodsCenter')
 }
