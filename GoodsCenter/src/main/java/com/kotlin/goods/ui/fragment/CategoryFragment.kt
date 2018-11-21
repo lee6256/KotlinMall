@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kennyc.view.MultiStateView
+import com.kotlin.base.ext.setVisible
+import com.kotlin.base.ext.startLoading
 import com.kotlin.base.ui.adapter.BaseRecyclerViewAdapter
 import com.kotlin.base.ui.fragment.BaseMvpFragment
 import com.kotlin.goods.R
@@ -35,15 +37,21 @@ class CategoryFragment : BaseMvpFragment<CategoryPresenter>(), CategoryView {
     }
 
     override fun onGetCategoryResult(result: MutableList<Category>?) {
-        result?.let {
+        if (result != null && result.size > 0) {
             if (result[0].parentId == 0) {
                 result[0].isSelected = true
                 topAdapter.setData(result)
                 loadData(result[0].id)
             } else {
                 secondAdapter.setData(result)
+                mTopCategoryIv.setVisible(true)
+                mCategoryTitleTv.setVisible(true)
                 mMultiStateView.viewState = MultiStateView.VIEW_STATE_CONTENT
             }
+        } else {
+            mTopCategoryIv.setVisible(false)
+            mCategoryTitleTv.setVisible(false)
+            mMultiStateView.viewState = MultiStateView.VIEW_STATE_EMPTY
         }
     }
 
@@ -83,6 +91,9 @@ class CategoryFragment : BaseMvpFragment<CategoryPresenter>(), CategoryView {
     }
 
     private fun loadData(parentId: Int = 0) {
+        if (parentId != 0) {
+            mMultiStateView.startLoading()
+        }
         mPresenter.getCategory(parentId)
     }
 }
