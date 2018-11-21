@@ -15,9 +15,11 @@ import com.kotlin.goods.injection.component.DaggerCategoryComponent
 import com.kotlin.goods.injection.module.CategoryModule
 import com.kotlin.goods.presenter.CategoryPresenter
 import com.kotlin.goods.presenter.view.CategoryView
+import com.kotlin.goods.ui.activity.GoodsActivity
 import com.kotlin.goods.ui.adapter.SecondCategoryAdapter
 import com.kotlin.goods.ui.adapter.TopCategoryAdapter
 import kotlinx.android.synthetic.main.fragment_category.*
+import org.jetbrains.anko.support.v4.startActivity
 
 class CategoryFragment : BaseMvpFragment<CategoryPresenter>(), CategoryView {
     lateinit var topAdapter: TopCategoryAdapter
@@ -43,10 +45,6 @@ class CategoryFragment : BaseMvpFragment<CategoryPresenter>(), CategoryView {
                 mMultiStateView.viewState = MultiStateView.VIEW_STATE_CONTENT
             }
         }
-    }
-
-    private fun loadData(parentId: Int = 0) {
-        mPresenter.getCategory(parentId)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,8 +77,12 @@ class CategoryFragment : BaseMvpFragment<CategoryPresenter>(), CategoryView {
         mSecondCategoryRv.adapter = secondAdapter
         secondAdapter.setOnItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener<Category> {
             override fun onItemClick(item: Category, position: Int) {
-                TODO()
+                startActivity<GoodsActivity>("categoryId" to item.id)
             }
         })
+    }
+
+    private fun loadData(parentId: Int = 0) {
+        mPresenter.getCategory(parentId)
     }
 }
