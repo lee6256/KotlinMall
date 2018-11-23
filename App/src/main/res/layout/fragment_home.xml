@@ -10,7 +10,7 @@
             android:id="@+id/mSearchEt"
             style="@style/SearchHeaderEtStyle"
             android:cursorVisible="false"
-            android:enabled="false"
+            android:inputType="none"
             android:hint="搜索商品/品类" />
 
         <ImageView

@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout
 import com.kennyc.view.MultiStateView
+import com.kotlin.base.ext.startLoading
 import com.kotlin.base.ui.activity.BaseMvpActivity
 import com.kotlin.goods.R
 import com.kotlin.goods.common.GoodsConstant
@@ -46,7 +47,13 @@ class GoodsActivity : BaseMvpActivity<GoodsListPresenter>(), GoodsListView, BGAR
     }
 
     private fun loadData() {
-        mPresenter.getGoodsList(intent.getIntExtra(GoodsConstant.KEY_CATEGORY_ID, 1), mCurrentPage)
+        if (intent.getIntExtra(GoodsConstant.KEY_SEARCH_GOODS_TYPE, 0) != 0) {
+            mMultiStateView.startLoading()
+            mPresenter.getGoodsListByKeyword(intent.getStringExtra(GoodsConstant.KEY_GOODS_KEYWORD), mCurrentPage)
+        } else {
+            mMultiStateView.startLoading()
+            mPresenter.getGoodsList(intent.getIntExtra(GoodsConstant.KEY_CATEGORY_ID, 1), mCurrentPage)
+        }
     }
 
     override fun onGetGoodsListResult(result: MutableList<Goods>?) {
