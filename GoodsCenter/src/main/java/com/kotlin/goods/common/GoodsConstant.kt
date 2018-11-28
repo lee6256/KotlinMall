@@ -7,5 +7,6 @@ class GoodsConstant {
         const  val SEARCH_GOODS_TYPE_KEYWORD = 1
         const val KEY_GOODS_KEYWORD = "goods_keyword"
         const val KEY_CATEGORY_ID = "categoryId"
+        const  val KEY_GOODS_ID = "goods_id"
     }
 }
