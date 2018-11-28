@@ -1,10 +1,12 @@
 package com.kotlin.goods.ui.fragment
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.eightbitlab.rxbus.Bus
+import com.kotlin.base.ext.onClick
 import com.kotlin.base.ui.fragment.BaseMvpFragment
 import com.kotlin.base.utils.YuanFenConverter
 import com.kotlin.base.widgets.BannerImageLoader
@@ -16,11 +18,15 @@ import com.kotlin.goods.injection.component.DaggerGoodsComponent
 import com.kotlin.goods.injection.module.GoodsModule
 import com.kotlin.goods.presenter.GoodsDetailPresenter
 import com.kotlin.goods.presenter.view.GoodsDetailView
+import com.kotlin.goods.ui.activity.GoodsDetailActivity
+import com.kotlin.goods.widget.GoodsSkuPopView
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.fragment_goods_detail_tab_one.*
 
 class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), GoodsDetailView {
+
+    private lateinit var mSkuPop: GoodsSkuPopView
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -30,7 +36,12 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initSkuPop()
         loadData()
+    }
+
+    private fun initSkuPop() {
+        mSkuPop = GoodsSkuPopView(activity)
     }
 
     private fun loadData() {
@@ -42,6 +53,12 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
         mGoodsDetailBanner.setBannerAnimation(Transformer.Tablet)
         mGoodsDetailBanner.setIndicatorGravity(BannerConfig.RIGHT)
         mGoodsDetailBanner.setDelayTime(5000)
+
+        mSkuView.onClick {
+            mSkuPop.showAtLocation((activity as GoodsDetailActivity).contentView,
+                    Gravity.BOTTOM and Gravity.CENTER_HORIZONTAL,
+                    0, 0)
+        }
     }
 
     override fun injectComponent() {

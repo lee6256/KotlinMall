@@ -8,5 +8,6 @@ class GoodsConstant {
         const val KEY_GOODS_KEYWORD = "goods_keyword"
         const val KEY_CATEGORY_ID = "categoryId"
         const  val KEY_GOODS_ID = "goods_id"
+        const val SKU_SEPARATOR = ","
     }
 }
