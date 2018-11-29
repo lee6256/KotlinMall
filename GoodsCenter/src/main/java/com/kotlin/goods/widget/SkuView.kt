@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.eightbitlab.rxbus.Bus
 import com.kotlin.goods.R
 import com.kotlin.goods.common.GoodsConstant
 import com.kotlin.goods.data.protocol.GoodsSku
+import com.kotlin.goods.event.SkuChangedEvent
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import kotlinx.android.synthetic.main.layout_sku_view.view.*
@@ -36,10 +38,10 @@ class SkuView @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
 
         mSkuContentView.adapter.setSelectedList(0)
 
-//        mSkuContentView.setOnTagClickListener { _, _, _ ->
-//            Bus.send(SkuChangedEvent())
-//            true
-//        }
+        mSkuContentView.setOnTagClickListener { _, _, _ ->
+            Bus.send(SkuChangedEvent())
+            true
+        }
     }
 
     fun getSkuInfo(): String {

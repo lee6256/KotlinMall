@@ -8,12 +8,16 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import com.eightbitlab.rxbus.Bus
 import com.kotlin.base.ext.loadUrl
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.utils.YuanFenConverter
+import com.kotlin.base.widgets.DefaultTextWatcher
 import com.kotlin.goods.R
 import com.kotlin.goods.common.GoodsConstant
 import com.kotlin.goods.data.protocol.GoodsSku
+import com.kotlin.goods.event.SkuChangedEvent
+import com.kotlin.goods.getEditText
 import kotlinx.android.synthetic.main.layout_sku_pop.view.*
 
 class GoodsSkuPopView(context: Activity) : PopupWindow(context), View.OnClickListener {
@@ -58,13 +62,13 @@ class GoodsSkuPopView(context: Activity) : PopupWindow(context), View.OnClickLis
         mRootView.mAddCartBtn.onClick(this)
 
         mRootView.mSkuCountBtn.setCurrentNumber(1)
-//        mRootView.mSkuCountBtn.getEditText().addTextChangedListener(
-//                object : DefaultTextWatcher() {
-//                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                        Bus.send(SkuChangedEvent())
-//                    }
-//                }
-//        )
+        mRootView.mSkuCountBtn.getEditText().addTextChangedListener(
+                object : DefaultTextWatcher() {
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        Bus.send(SkuChangedEvent())
+                    }
+                }
+        )
 //
 //        mRootView.mAddCartBtn.onClick {
 //            Bus.send(AddCartEvent())
