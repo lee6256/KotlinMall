@@ -79,5 +79,15 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
         mSkuSelectedTv.text = result.goodsDefaultSku
 
         Bus.send(GoodsDetailImageEvent(result.goodsDetailOne, result.goodsDetailTwo))
+
+        loadPopData(result)
+    }
+
+    private fun loadPopData(result: Goods) {
+        mSkuPop.setGoodsIcon(result.goodsDefaultIcon)
+        mSkuPop.setGoodsCode(result.goodsCode)
+        mSkuPop.setGoodsPrice(result.goodsDefaultPrice)
+
+        mSkuPop.setSkuData(result.goodsSku)
     }
 }

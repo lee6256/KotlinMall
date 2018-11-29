@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
-import com.eightbitlab.rxbus.Bus
 import com.kotlin.base.ext.loadUrl
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.utils.YuanFenConverter
-import com.kotlin.base.widgets.DefaultTextWatcher
 import com.kotlin.goods.R
 import com.kotlin.goods.common.GoodsConstant
 import com.kotlin.goods.data.protocol.GoodsSku
