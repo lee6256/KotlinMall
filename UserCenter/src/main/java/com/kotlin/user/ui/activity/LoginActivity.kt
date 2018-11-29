@@ -3,9 +3,11 @@ package com.kotlin.user.ui.activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotlin.base.ext.enable
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.ui.activity.BaseMvpActivity
+import com.kotlin.provider.router.RouterPath
 import com.kotlin.user.R
 import com.kotlin.user.data.protocol.UserInfo
 import com.kotlin.user.injection.component.DaggerUserComponent
@@ -17,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
+@Route(path = RouterPath.UserCenter.PATH_LOGIN)
 class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClickListener {
 
     override fun injectComponent() {
