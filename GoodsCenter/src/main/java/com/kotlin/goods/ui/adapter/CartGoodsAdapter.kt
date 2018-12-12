@@ -10,9 +10,12 @@ import com.kotlin.base.ext.loadUrl
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.ui.adapter.BaseRecyclerViewAdapter
 import com.kotlin.base.utils.YuanFenConverter
+import com.kotlin.base.widgets.DefaultTextWatcher
 import com.kotlin.goods.R
 import com.kotlin.goods.data.protocol.CartGoods
 import com.kotlin.goods.event.CartAllCheckedEvent
+import com.kotlin.goods.event.UpdateTotalPriceEvent
+import com.kotlin.goods.getEditText
 import kotlinx.android.synthetic.main.layout_cart_goods_item.view.*
 
 class CartGoodsAdapter(context: Context) : BaseRecyclerViewAdapter<CartGoods, CartGoodsAdapter.ViewHolder>(context) {
@@ -42,6 +45,14 @@ class CartGoodsAdapter(context: Context) : BaseRecyclerViewAdapter<CartGoods, Ca
             Bus.send(CartAllCheckedEvent(isAllChecked))
             notifyDataSetChanged()
         }
+
+        holder.itemView.mGoodsCountBtn.getEditText()
+                .addTextChangedListener(object : DefaultTextWatcher() {
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        model.goodsCount = s.toString().toInt()
+                        Bus.send(UpdateTotalPriceEvent())
+                    }
+                })
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)

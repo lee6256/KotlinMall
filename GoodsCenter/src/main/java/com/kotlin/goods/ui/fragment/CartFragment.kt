@@ -11,9 +11,11 @@ import com.kennyc.view.MultiStateView
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.ext.startLoading
 import com.kotlin.base.ui.fragment.BaseMvpFragment
+import com.kotlin.base.utils.YuanFenConverter
 import com.kotlin.goods.R
 import com.kotlin.goods.data.protocol.CartGoods
 import com.kotlin.goods.event.CartAllCheckedEvent
+import com.kotlin.goods.event.UpdateTotalPriceEvent
 import com.kotlin.goods.injection.component.DaggerCartComponent
 import com.kotlin.goods.injection.module.CartModule
 import com.kotlin.goods.presenter.CartListPresenter
@@ -23,6 +25,8 @@ import kotlinx.android.synthetic.main.fragment_cart.*
 
 class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
     private lateinit var mAdapter: CartGoodsAdapter
+
+    private var mTotalPrice: Long = 0
 
     override fun injectComponent() {
         DaggerCartComponent.builder()
@@ -55,6 +59,7 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
                 item.isSelected = mAllCheckedCb.isChecked
             }
             mAdapter.notifyDataSetChanged()
+            updateTotalPrice()
         }
     }
 
@@ -68,8 +73,13 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
                 .subscribe { t: CartAllCheckedEvent ->
                     run {
                         mAllCheckedCb.isChecked = t.isAllChecked
+                        updateTotalPrice()
                     }
                 }
+                .registerInBus(this)
+
+        Bus.observe<UpdateTotalPriceEvent>()
+                .subscribe { updateTotalPrice() }
                 .registerInBus(this)
     }
 
@@ -85,5 +95,15 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
         } else {
             mMultiStateView.viewState = MultiStateView.VIEW_STATE_EMPTY
         }
+    }
+
+    private fun updateTotalPrice() {
+        mTotalPrice = mAdapter.dataList
+                .filter { it.isSelected }
+                .map { it.goodsCount * it.goodsPrice }
+                .sum()
+
+        mTotalPriceTv.text = "合计${YuanFenConverter.changeF2YWithUnit(mTotalPrice)}"
+
     }
 }
