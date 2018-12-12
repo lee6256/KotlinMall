@@ -85,6 +85,18 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
                 mPresenter.deleteCartList(cartIdList)
             }
         }
+
+        mSettleAccountsBtn.onClick {
+            val cartIdList: MutableList<CartGoods> = arrayListOf()
+            mAdapter.dataList
+                    .filter { it.isSelected }
+                    .mapTo(cartIdList) { it }
+            if (cartIdList.size == 0) {
+                toast("请选择商品")
+            } else {
+                mPresenter.submitCart(cartIdList, mTotalPrice)
+            }
+        }
     }
 
     private fun refreshEditStatus() {
@@ -141,6 +153,10 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
         toast("删除成功")
         loadData()
         refreshEditStatus()
+    }
+
+    override fun onSubmitCartResult(result: Int) {
+        toast("$result")
     }
 
     private fun updateTotalPrice() {

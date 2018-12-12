@@ -38,4 +38,17 @@ class CartListPresenter @Inject constructor(): BasePresenter<CartListView>() {
                     }
                 }, lifecycleProvider)
     }
+
+    fun submitCart(goodsList: List<CartGoods>, totalPrice: Long) {
+        if (!checkNetWork()) {
+            println("无网络")
+        }
+        mView.showLoading()
+        cartService.submitCart(goodsList, totalPrice)
+                .execute(object : BaseSubscriber<Int>(mView) {
+                    override fun onNext(t: Int) {
+//                        mView.onSubmitCartResult(t)
+                    }
+                }, lifecycleProvider)
+    }
 }
