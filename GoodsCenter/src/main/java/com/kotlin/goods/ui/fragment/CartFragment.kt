@@ -5,11 +5,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.eightbitlab.rxbus.Bus
+import com.eightbitlab.rxbus.registerInBus
 import com.kennyc.view.MultiStateView
+import com.kotlin.base.ext.onClick
 import com.kotlin.base.ext.startLoading
 import com.kotlin.base.ui.fragment.BaseMvpFragment
 import com.kotlin.goods.R
 import com.kotlin.goods.data.protocol.CartGoods
+import com.kotlin.goods.event.CartAllCheckedEvent
 import com.kotlin.goods.injection.component.DaggerCartComponent
 import com.kotlin.goods.injection.module.CartModule
 import com.kotlin.goods.presenter.CartListPresenter
@@ -38,17 +42,40 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
         super.onViewCreated(view, savedInstanceState)
         initView()
         loadData()
+        initObserve()
     }
 
     private fun initView() {
         mCartGoodsRv.layoutManager = LinearLayoutManager(context)
         mAdapter = CartGoodsAdapter(context)
         mCartGoodsRv.adapter = mAdapter
+
+        mAllCheckedCb.onClick {
+            for (item in mAdapter.dataList) {
+                item.isSelected = mAllCheckedCb.isChecked
+            }
+            mAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun loadData() {
         mMultiStateView.startLoading()
         mPresenter.getCartList()
+    }
+
+    private fun initObserve() {
+        Bus.observe<CartAllCheckedEvent>()
+                .subscribe { t: CartAllCheckedEvent ->
+                    run {
+                        mAllCheckedCb.isChecked = t.isAllChecked
+                    }
+                }
+                .registerInBus(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Bus.unregister(this)
     }
 
     override fun onGetCartListResult(result: MutableList<CartGoods>?) {

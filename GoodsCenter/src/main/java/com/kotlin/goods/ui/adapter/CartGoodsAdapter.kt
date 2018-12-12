@@ -5,11 +5,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.eightbitlab.rxbus.Bus
 import com.kotlin.base.ext.loadUrl
+import com.kotlin.base.ext.onClick
 import com.kotlin.base.ui.adapter.BaseRecyclerViewAdapter
 import com.kotlin.base.utils.YuanFenConverter
 import com.kotlin.goods.R
 import com.kotlin.goods.data.protocol.CartGoods
+import com.kotlin.goods.event.CartAllCheckedEvent
 import kotlinx.android.synthetic.main.layout_cart_goods_item.view.*
 
 class CartGoodsAdapter(context: Context) : BaseRecyclerViewAdapter<CartGoods, CartGoodsAdapter.ViewHolder>(context) {
@@ -32,6 +35,13 @@ class CartGoodsAdapter(context: Context) : BaseRecyclerViewAdapter<CartGoods, Ca
         holder.itemView.mGoodsSkuTv.text = model.goodsSku
         holder.itemView.mGoodsPriceTv.text = YuanFenConverter.changeF2YWithUnit(model.goodsPrice)
         holder.itemView.mGoodsCountBtn.setCurrentNumber(model.goodsCount)
+
+        holder.itemView.mCheckedCb.onClick {
+            model.isSelected = holder.itemView.mCheckedCb.isChecked
+            val isAllChecked = dataList.all { it.isSelected }
+            Bus.send(CartAllCheckedEvent(isAllChecked))
+            notifyDataSetChanged()
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
