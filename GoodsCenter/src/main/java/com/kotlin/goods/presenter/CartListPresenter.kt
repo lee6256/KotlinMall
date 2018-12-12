@@ -25,4 +25,17 @@ class CartListPresenter @Inject constructor(): BasePresenter<CartListView>() {
                     }
                 }, lifecycleProvider)
     }
+
+    fun deleteCartList(list: List<Int>) {
+        if (!checkNetWork()) {
+            println("无网络")
+        }
+        mView.showLoading()
+        cartService.deleteCartList(list)
+                .execute(object : BaseSubscriber<Boolean>(mView) {
+                    override fun onNext(t: Boolean) {
+                        mView.onDeleteCartListResult(t)
+                    }
+                }, lifecycleProvider)
+    }
 }

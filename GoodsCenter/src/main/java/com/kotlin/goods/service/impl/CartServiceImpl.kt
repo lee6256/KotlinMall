@@ -1,9 +1,9 @@
 package com.kotlin.goods.service.impl
 
 import com.kotlin.base.ext.convert
+import com.kotlin.base.ext.convertBoolean
 import com.kotlin.goods.data.protocol.CartGoods
 import com.kotlin.goods.data.repository.CartRepository
-import com.kotlin.goods.data.repository.CategoryRepository
 import com.kotlin.goods.service.CartService
 import rx.Observable
 import javax.inject.Inject
@@ -20,8 +20,8 @@ class CartServiceImpl @Inject constructor(): CartService {
         return repository.addCart(goodsId, goodsDesc, goodsIcon, goodsPrice, goodsCount, goodsSku).convert()
     }
 
-    override fun deleteCartList(cartIdList: List<Int>): Observable<String> {
-        return repository.deleteCartList(cartIdList).convert()
+    override fun deleteCartList(cartIdList: List<Int>): Observable<Boolean> {
+        return repository.deleteCartList(cartIdList).convertBoolean()
     }
 
     override fun submitCart(goodsList: List<CartGoods>, totalPrice: Long): Observable<Int> {

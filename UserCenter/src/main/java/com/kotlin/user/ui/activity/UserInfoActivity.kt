@@ -72,7 +72,7 @@ class UserInfoActivity : BaseMvpActivity<UserInfoPresenter>(), UserInfoView, Tak
         mUserIconView.onClick {
             showAlertView()
         }
-        mHeaderBar.getRightText().onClick {
+        mHeaderBar.getRightView().onClick {
             mPresenter.editUser(mRemoteFileUrl!!,
                     mUserNameEt.text.toString(),
                     if (mGenderMaleRb.isChecked) "0" else "1",

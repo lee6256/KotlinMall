@@ -1,7 +1,6 @@
 package com.kotlin.user.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotlin.base.ext.enable
@@ -50,7 +49,7 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
 
         mLoginBtn.onClick(this)
         mForgetPwdTv.onClick(this)
-        mHeaderBar.getRightText().onClick(this)
+        mHeaderBar.getRightView().onClick(this)
     }
 
     override fun onClick(v: View) {
