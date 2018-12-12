@@ -17,6 +17,7 @@ import com.kotlin.base.widgets.BannerImageLoader
 import com.kotlin.goods.R
 import com.kotlin.goods.common.GoodsConstant
 import com.kotlin.goods.data.protocol.Goods
+import com.kotlin.goods.event.AddCartEvent
 import com.kotlin.goods.event.GoodsDetailImageEvent
 import com.kotlin.goods.event.SkuChangedEvent
 import com.kotlin.goods.injection.component.DaggerGoodsComponent
@@ -28,12 +29,15 @@ import com.kotlin.goods.widget.GoodsSkuPopView
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.fragment_goods_detail_tab_one.*
+import org.jetbrains.anko.support.v4.toast
 
 class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), GoodsDetailView {
 
     private lateinit var mSkuPop: GoodsSkuPopView
     private lateinit var mAnimationStart: Animation
     private lateinit var mAnimationEnd: Animation
+
+    private var mCurGoods: Goods? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -96,6 +100,8 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
     }
 
     override fun onGetGoodsDetailResult(result: Goods) {
+        mCurGoods = result
+
         mGoodsDetailBanner.setImages(result.goodsBanner.split(","))
         mGoodsDetailBanner.start()
 
@@ -106,6 +112,10 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
         Bus.send(GoodsDetailImageEvent(result.goodsDetailOne, result.goodsDetailTwo))
 
         loadPopData(result)
+    }
+
+    override fun onAddCartResult(result: Int) {
+        toast("Cart-->$result")
     }
 
     private fun loadPopData(result: Goods) {
@@ -124,10 +134,24 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
                             mSkuPop.getSelectCount() +
                             "件"
                 }.registerInBus(this)
+
+        Bus.observe<AddCartEvent>()
+                .subscribe { addCart() }.registerInBus(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Bus.unregister(this)
+    }
+
+    private fun addCart() {
+        mCurGoods?.let {
+            mPresenter.addCart(it.id,
+                    it.goodsDesc,
+                    it.goodsDefaultIcon,
+                    it.goodsDefaultPrice,
+                    mSkuPop.getSelectCount(),
+                    mSkuPop.getSelectSku())
+        }
     }
 }
