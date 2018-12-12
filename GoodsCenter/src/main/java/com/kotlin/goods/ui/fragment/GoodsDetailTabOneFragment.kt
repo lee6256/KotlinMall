@@ -20,6 +20,7 @@ import com.kotlin.goods.data.protocol.Goods
 import com.kotlin.goods.event.AddCartEvent
 import com.kotlin.goods.event.GoodsDetailImageEvent
 import com.kotlin.goods.event.SkuChangedEvent
+import com.kotlin.goods.event.UpdateCartSizeEvent
 import com.kotlin.goods.injection.component.DaggerGoodsComponent
 import com.kotlin.goods.injection.module.GoodsModule
 import com.kotlin.goods.presenter.GoodsDetailPresenter
@@ -115,7 +116,7 @@ class GoodsDetailTabOneFragment : BaseMvpFragment<GoodsDetailPresenter>(), Goods
     }
 
     override fun onAddCartResult(result: Int) {
-        toast("Cart-->$result")
+        Bus.send(UpdateCartSizeEvent())
     }
 
     private fun loadPopData(result: Goods) {
