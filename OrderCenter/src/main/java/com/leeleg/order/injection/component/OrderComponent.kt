@@ -7,7 +7,7 @@ import com.leeleg.order.ui.activity.OrderConfirmActivity
 import dagger.Component
 
 @PerComponentScope
-@Component(dependencies = [ActivityComponent::class], modules = [OrderModule::class])
+@Component(dependencies = [ActivityComponent::class], modules = [(OrderModule::class)])
 interface OrderComponent {
     fun inject(activity: OrderConfirmActivity)
 }
