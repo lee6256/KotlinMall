@@ -139,6 +139,7 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
         if (result != null && result.size > 0) {
             mAdapter.setData(result)
             mHeaderBar.getRightView().setVisible(true)
+            mAllCheckedCb.isChecked = false
             mMultiStateView.viewState = MultiStateView.VIEW_STATE_CONTENT
         } else {
             mHeaderBar.getRightView().setVisible(false)
@@ -166,5 +167,9 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
                 .sum()
 
         mTotalPriceTv.text = "合计${YuanFenConverter.changeF2YWithUnit(mTotalPrice)}"
+    }
+
+    fun setBackVisible(isVisible: Boolean) {
+        mHeaderBar.getLeftView().setVisible(isVisible)
     }
 }
