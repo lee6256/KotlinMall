@@ -36,4 +36,5 @@ dependencies {
     }
     api project(':MessageCenter')
     api project(':GoodsCenter')
+    api project(':OrderCenter')
 }

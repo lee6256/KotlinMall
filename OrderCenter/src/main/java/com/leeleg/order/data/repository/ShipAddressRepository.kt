@@ -12,16 +12,22 @@ import rx.Observable
 import javax.inject.Inject
 
 class ShipAddressRepository @Inject constructor() {
-    fun addShipAddress(@Body req: AddShipAddressReq): Observable<BaseResp<String>> {
-        return RetrofitFactory.instance.create(ShipAddressApi::class.java).addShipAddress(req)
+    fun addShipAddress(shipUserName: String, shipUserMobile: String, shipAddress: String): Observable<BaseResp<String>> {
+        return RetrofitFactory.instance.create(ShipAddressApi::class.java)
+                .addShipAddress(AddShipAddressReq(shipUserName, shipUserMobile, shipAddress))
     }
 
-    fun deleteShipAddress(@Body req: DeleteShipAddressReq): Observable<BaseResp<String>> {
-        return RetrofitFactory.instance.create(ShipAddressApi::class.java).deleteShipAddress(req)
+    fun deleteShipAddress(id: Int): Observable<BaseResp<String>> {
+        return RetrofitFactory.instance.create(ShipAddressApi::class.java)
+                .deleteShipAddress(DeleteShipAddressReq(id))
     }
 
-    fun editShipAddress(@Body req: EditShipAddressReq): Observable<BaseResp<String>> {
-        return RetrofitFactory.instance.create(ShipAddressApi::class.java).editShipAddress(req)
+    fun editShipAddress(id: Int, shipUserName: String, shipUserMobile: String, shipAddress: String,
+                        shipIsDefault: Int): Observable<BaseResp<String>> {
+        return RetrofitFactory.instance.create(ShipAddressApi::class.java)
+                .editShipAddress(EditShipAddressReq(
+                        id, shipUserName, shipUserMobile, shipAddress, shipIsDefault
+                ))
     }
 
     fun getShipAddressList(): Observable<BaseResp<MutableList<ShipAddress>?>> {
