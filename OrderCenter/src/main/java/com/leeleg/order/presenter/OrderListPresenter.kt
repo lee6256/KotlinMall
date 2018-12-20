@@ -25,4 +25,30 @@ class OrderListPresenter @Inject constructor(): BasePresenter<OrderListView>() {
                     }
                 }, lifecycleProvider)
     }
+
+    fun confirmOrder(orderId: Int) {
+        if (!checkNetWork()) {
+            println("无网络")
+        }
+        mView.showLoading()
+        orderService.confirmOrder(orderId)
+                .execute(object : BaseSubscriber<Boolean>(mView) {
+                    override fun onNext(t: Boolean) {
+                        mView.onConfirmOrderResult(t)
+                    }
+                }, lifecycleProvider)
+    }
+
+    fun cancelOrder(orderId: Int) {
+        if (!checkNetWork()) {
+            println("无网络")
+        }
+        mView.showLoading()
+        orderService.cancelOrder(orderId)
+                .execute(object : BaseSubscriber<Boolean>(mView) {
+                    override fun onNext(t: Boolean) {
+                        mView.onCancelOrderResult(t)
+                    }
+                }, lifecycleProvider)
+    }
 }

@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bigkoo.alertview.AlertView
+import com.bigkoo.alertview.OnItemClickListener
 import com.kennyc.view.MultiStateView
 import com.kotlin.base.ext.startLoading
 import com.kotlin.base.ui.fragment.BaseMvpFragment
@@ -17,6 +19,7 @@ import com.leeleg.order.injection.module.OrderModule
 import com.leeleg.order.presenter.OrderListPresenter
 import com.leeleg.order.presenter.view.OrderListView
 import kotlinx.android.synthetic.main.fragment_order.*
+import org.jetbrains.anko.support.v4.toast
 
 class OrderFragment : BaseMvpFragment<OrderListPresenter>(), OrderListView {
 
@@ -51,11 +54,26 @@ class OrderFragment : BaseMvpFragment<OrderListPresenter>(), OrderListView {
             override fun onOptClick(optType: Int, order: Order) {
                 when (optType) {
                     OrderConstant.OPT_ORDER_PAY -> {}
-                    OrderConstant.OPT_ORDER_CONFIRM -> {}
-                    OrderConstant.OPT_ORDER_CANCEL -> {}
+                    OrderConstant.OPT_ORDER_CONFIRM -> {
+                        mPresenter.confirmOrder(order.id)
+                    }
+                    OrderConstant.OPT_ORDER_CANCEL -> {
+                        showCancelDialog(order)
+                    }
                 }
             }
         }
+    }
+
+    private fun showCancelDialog(order: Order) {
+        AlertView("取消订单", "确定取消该订单?", "取消", null,
+                arrayOf("确定"), activity,
+                AlertView.Style.Alert, OnItemClickListener { _, position ->
+            if (position == 0) {
+                mPresenter.cancelOrder(order.id)
+            }
+        }
+        ).show()
     }
 
     private fun loadData() {
@@ -70,5 +88,15 @@ class OrderFragment : BaseMvpFragment<OrderListPresenter>(), OrderListView {
         } else {
             mMultiStateView.viewState = MultiStateView.VIEW_STATE_EMPTY
         }
+    }
+
+    override fun onConfirmOrderResult(result: Boolean) {
+        toast("确认收货成功")
+        loadData()
+    }
+
+    override fun onCancelOrderResult(result: Boolean) {
+        toast("取消订单成功")
+        loadData()
     }
 }

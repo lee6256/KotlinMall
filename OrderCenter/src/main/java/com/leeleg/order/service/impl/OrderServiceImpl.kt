@@ -13,12 +13,12 @@ class OrderServiceImpl @Inject constructor(): OrderService {
     @Inject
     lateinit var repository: OrderRepository
 
-    override fun cancelOrder(orderId: Int): Observable<String> {
-        return repository.cancelOrder(orderId).convert()
+    override fun cancelOrder(orderId: Int): Observable<Boolean> {
+        return repository.cancelOrder(orderId).convertBoolean()
     }
 
-    override fun confirmOrder(orderId: Int): Observable<String> {
-        return repository.confirmOrder(orderId).convert()
+    override fun confirmOrder(orderId: Int): Observable<Boolean> {
+        return repository.confirmOrder(orderId).convertBoolean()
     }
 
     override fun getOrderById(orderId: Int): Observable<Order> {
