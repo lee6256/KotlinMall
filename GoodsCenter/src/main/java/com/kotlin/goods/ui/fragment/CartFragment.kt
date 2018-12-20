@@ -103,7 +103,7 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
     }
 
     private fun refreshEditStatus() {
-        val isEditStatus = getString(R.string.common_edit) == mHeaderBar.getRigthText()
+        val isEditStatus = getString(R.string.common_edit) == mHeaderBar.getRightText()
         mTotalPriceTv.setVisible(isEditStatus.not())
         mSettleAccountsBtn.setVisible(isEditStatus.not())
         mDeleteBtn.setVisible(isEditStatus)

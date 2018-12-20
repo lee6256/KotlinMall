@@ -8,6 +8,7 @@ import com.kotlin.base.ext.startLoading
 import com.kotlin.base.ui.activity.BaseMvpActivity
 import com.kotlin.order.ui.adapter.ShipAddressAdapter
 import com.leeleg.order.R
+import com.leeleg.order.common.OrderConstant
 import com.leeleg.order.data.protocol.ShipAddress
 import com.leeleg.order.injection.component.DaggerShipAddressComponent
 import com.leeleg.order.injection.module.ShipAddressModule
@@ -48,6 +49,7 @@ class ShipAddressActivity : BaseMvpActivity<ShipAddressPresenter>(), ShipAddress
             }
 
             override fun onEdit(address: ShipAddress) {
+                startActivity<ShipAddressEditActivity>(OrderConstant.KEY_SHIP_ADDRESS to address)
             }
 
             override fun onDelete(address: ShipAddress) {

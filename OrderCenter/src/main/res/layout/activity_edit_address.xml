@@ -5,8 +5,7 @@
 
     <com.kotlin.base.widgets.HeaderBar
         android:id="@id/mHeaderBar"
-        style="@style/MatchWrap"
-        app:titleText="新建地址" />
+        style="@style/MatchWrap" />
 
     <LinearLayout
         android:id="@+id/mShipNameView"
