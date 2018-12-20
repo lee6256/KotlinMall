@@ -38,4 +38,17 @@ class ShipAddressPresenter @Inject constructor(): BasePresenter<ShipAddressView>
                     }
                 }, lifecycleProvider)
     }
+
+    fun deleteShipAddress(id: Int) {
+        if (!checkNetWork()) {
+            println("无网络")
+        }
+        mView.showLoading()
+        shipAddressService.deleteShipAddress(id)
+                .execute(object : BaseSubscriber<Boolean>(mView) {
+                    override fun onNext(t: Boolean) {
+                        mView.onDeleteShipAddressResult(t)
+                    }
+                }, lifecycleProvider)
+    }
 }

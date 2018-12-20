@@ -3,11 +3,8 @@ package com.leeleg.order.presenter
 import com.kotlin.base.ext.execute
 import com.kotlin.base.presenter.BasePresenter
 import com.kotlin.base.rx.BaseSubscriber
-import com.leeleg.order.data.protocol.Order
 import com.leeleg.order.data.protocol.ShipAddress
 import com.leeleg.order.presenter.view.EditShipAddressView
-import com.leeleg.order.presenter.view.OrderConfirmView
-import com.leeleg.order.service.OrderService
 import com.leeleg.order.service.ShipAddressService
 import javax.inject.Inject
 

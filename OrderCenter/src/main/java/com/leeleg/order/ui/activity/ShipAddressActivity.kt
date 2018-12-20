@@ -2,6 +2,8 @@ package com.leeleg.order.ui.activity
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import com.bigkoo.alertview.AlertView
+import com.bigkoo.alertview.OnItemClickListener
 import com.kennyc.view.MultiStateView
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.ext.startLoading
@@ -53,6 +55,14 @@ class ShipAddressActivity : BaseMvpActivity<ShipAddressPresenter>(), ShipAddress
             }
 
             override fun onDelete(address: ShipAddress) {
+                AlertView("删除", "确定删除该地址?", "取消", null,
+                        arrayOf("确定"), this@ShipAddressActivity,
+                        AlertView.Style.Alert, OnItemClickListener { _, position ->
+                    if (position == 0) {
+                        mPresenter.deleteShipAddress(address.id)
+                    }
+                }
+                ).show()
             }
         }
 
@@ -82,6 +92,11 @@ class ShipAddressActivity : BaseMvpActivity<ShipAddressPresenter>(), ShipAddress
 
     override fun onSetDefaultResult(result: Boolean) {
         toast("设置成功")
+        loadData()
+    }
+
+    override fun onDeleteShipAddressResult(result: Boolean) {
+        toast("删除成功")
         loadData()
     }
 }
