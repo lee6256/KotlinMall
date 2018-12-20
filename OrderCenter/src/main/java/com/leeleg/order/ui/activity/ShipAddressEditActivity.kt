@@ -65,6 +65,7 @@ class ShipAddressEditActivity : BaseMvpActivity<EditShipAddressPresenter>(), Edi
                 mAddress!!.shipAddress = mShipAddressEt.text.toString()
                 mPresenter.editShipAddress(mAddress!!)
             }
+            finish()
         }
     }
 

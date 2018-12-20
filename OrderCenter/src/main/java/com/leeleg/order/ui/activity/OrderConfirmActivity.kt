@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.eightbitlab.rxbus.Bus
+import com.eightbitlab.rxbus.registerInBus
 import com.kotlin.base.ext.onClick
+import com.kotlin.base.ext.setVisible
 import com.kotlin.base.ui.activity.BaseMvpActivity
 import com.kotlin.base.utils.YuanFenConverter
 import com.kotlin.provider.common.ProviderConstant
 import com.kotlin.provider.router.RouterPath
 import com.leeleg.order.R
 import com.leeleg.order.data.protocol.Order
+import com.leeleg.order.event.SelectAddressEvent
 import com.leeleg.order.injection.component.DaggerOrderComponent
 import com.leeleg.order.injection.module.OrderModule
 import com.leeleg.order.presenter.OrderConfirmPresenter
@@ -25,23 +29,61 @@ class OrderConfirmActivity : BaseMvpActivity<OrderConfirmPresenter>(), OrderConf
     @Autowired(name = ProviderConstant.KEY_ORDER_ID)
     @JvmField
     var mOrderId: Int = 0
+
     private lateinit var mAdapter: OrderGoodsAdapter
+    private var mCurrentOrder: Order? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_confirm)
 
         initView()
+        initObserve()
         loadData()
     }
 
     private fun initView() {
+        mShipView.onClick {
+            startActivity<ShipAddressActivity>()
+        }
         mSelectShipTv.onClick {
             startActivity<ShipAddressActivity>()
         }
         mOrderGoodsRv.layoutManager = LinearLayoutManager(this)
         mAdapter = OrderGoodsAdapter(this)
         mOrderGoodsRv.adapter = mAdapter
+    }
+
+    private fun initObserve() {
+        Bus.observe<SelectAddressEvent>()
+                .subscribe {
+                    t: SelectAddressEvent ->
+                    run {
+                        mCurrentOrder?.let {
+                            it.shipAddress = t.address
+                        }
+                        updateAddressView()
+                    }
+                }
+                .registerInBus(this)
+    }
+
+    private fun updateAddressView() {
+        mCurrentOrder?.let {
+            if (it.shipAddress == null) {
+                mSelectShipTv.setVisible(true)
+                mShipView.setVisible(false)
+            } else {
+                mSelectShipTv.setVisible(false)
+                mShipView.setVisible(true)
+
+                mShipNameTv.text = it.shipAddress!!.shipUserName +
+                        " " +
+                        it.shipAddress!!.shipUserMobile
+                mShipAddressTv.text = it.shipAddress!!.shipAddress
+
+            }
+        }
     }
 
     private fun loadData() {
@@ -57,8 +99,15 @@ class OrderConfirmActivity : BaseMvpActivity<OrderConfirmPresenter>(), OrderConf
         mPresenter.mView = this
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Bus.unregister(this)
+    }
+
     override fun onGetOrderByIdResult(result: Order) {
+        mCurrentOrder = result
         mAdapter.setData(result.orderGoodsList)
         mTotalPriceTv.text = "合计：${YuanFenConverter.changeF2YWithUnit(result.totalPrice)}"
+        updateAddressView()
     }
 }
