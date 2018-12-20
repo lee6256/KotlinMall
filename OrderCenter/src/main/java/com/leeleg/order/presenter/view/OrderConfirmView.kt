@@ -5,4 +5,5 @@ import com.leeleg.order.data.protocol.Order
 
 interface OrderConfirmView : BaseView{
     fun onGetOrderByIdResult(result: Order)
+    fun onSubmitOrderResult(result: Boolean)
 }

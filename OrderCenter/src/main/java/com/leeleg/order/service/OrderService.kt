@@ -8,5 +8,5 @@ interface OrderService {
     fun confirmOrder(orderId: Int): Observable<String>
     fun getOrderById(orderId: Int): Observable<Order>
     fun getOrderList(orderStatus: Int): Observable<MutableList<Order>?>
-    fun submitOrder(order: Order): Observable<String>
+    fun submitOrder(order: Order): Observable<Boolean>
 }

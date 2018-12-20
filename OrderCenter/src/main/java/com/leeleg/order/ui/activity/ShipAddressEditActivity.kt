@@ -65,7 +65,6 @@ class ShipAddressEditActivity : BaseMvpActivity<EditShipAddressPresenter>(), Edi
                 mAddress!!.shipAddress = mShipAddressEt.text.toString()
                 mPresenter.editShipAddress(mAddress!!)
             }
-            finish()
         }
     }
 
@@ -80,9 +79,11 @@ class ShipAddressEditActivity : BaseMvpActivity<EditShipAddressPresenter>(), Edi
 
     override fun onAddShipAddressResult(result: Boolean) {
         toast("地址添加成功")
+        finish()
     }
 
     override fun onEditShipAddressResult(result: Boolean) {
         toast("地址修改成功")
+        finish()
     }
 }

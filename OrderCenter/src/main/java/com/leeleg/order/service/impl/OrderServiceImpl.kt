@@ -1,6 +1,7 @@
 package com.leeleg.order.service.impl
 
 import com.kotlin.base.ext.convert
+import com.kotlin.base.ext.convertBoolean
 import com.leeleg.order.data.protocol.Order
 import com.leeleg.order.data.repository.OrderRepository
 import com.leeleg.order.service.OrderService
@@ -28,7 +29,7 @@ class OrderServiceImpl @Inject constructor(): OrderService {
         return repository.getOrderList(orderStatus).convert()
     }
 
-    override fun submitOrder(order: Order): Observable<String> {
-        return repository.submitOrder(order).convert()
+    override fun submitOrder(order: Order): Observable<Boolean> {
+        return repository.submitOrder(order).convertBoolean()
     }
 }

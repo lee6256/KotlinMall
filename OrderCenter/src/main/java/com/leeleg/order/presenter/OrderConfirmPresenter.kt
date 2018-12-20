@@ -25,4 +25,17 @@ class OrderConfirmPresenter @Inject constructor(): BasePresenter<OrderConfirmVie
                     }
                 }, lifecycleProvider)
     }
+
+    fun submitOrder(order: Order) {
+        if (!checkNetWork()) {
+            println("无网络")
+        }
+        mView.showLoading()
+        orderService.submitOrder(order)
+                .execute(object : BaseSubscriber<Boolean>(mView) {
+                    override fun onNext(t: Boolean) {
+                        mView.onSubmitOrderResult(t)
+                    }
+                }, lifecycleProvider)
+    }
 }

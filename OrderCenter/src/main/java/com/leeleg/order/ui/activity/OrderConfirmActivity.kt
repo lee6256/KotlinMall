@@ -22,6 +22,7 @@ import com.leeleg.order.presenter.view.OrderConfirmView
 import com.leeleg.order.ui.adapter.OrderGoodsAdapter
 import kotlinx.android.synthetic.main.activity_order_confirm.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 @Route(path = RouterPath.OrderCenter.PATH_ORDER_CONFIRM)
 class OrderConfirmActivity : BaseMvpActivity<OrderConfirmPresenter>(), OrderConfirmView {
@@ -49,6 +50,13 @@ class OrderConfirmActivity : BaseMvpActivity<OrderConfirmPresenter>(), OrderConf
         mSelectShipTv.onClick {
             startActivity<ShipAddressActivity>()
         }
+
+        mSubmitOrderBtn.onClick {
+            mCurrentOrder?.let {
+                mPresenter.submitOrder(it)
+            }
+        }
+
         mOrderGoodsRv.layoutManager = LinearLayoutManager(this)
         mAdapter = OrderGoodsAdapter(this)
         mOrderGoodsRv.adapter = mAdapter
@@ -109,5 +117,9 @@ class OrderConfirmActivity : BaseMvpActivity<OrderConfirmPresenter>(), OrderConf
         mAdapter.setData(result.orderGoodsList)
         mTotalPriceTv.text = "合计：${YuanFenConverter.changeF2YWithUnit(result.totalPrice)}"
         updateAddressView()
+    }
+
+    override fun onSubmitOrderResult(result: Boolean) {
+        toast("订单提交成功")
     }
 }
