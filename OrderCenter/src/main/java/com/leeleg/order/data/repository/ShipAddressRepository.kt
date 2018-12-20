@@ -7,7 +7,6 @@ import com.kotlin.order.data.protocol.DeleteShipAddressReq
 import com.kotlin.order.data.protocol.EditShipAddressReq
 import com.leeleg.order.data.api.ShipAddressApi
 import com.leeleg.order.data.protocol.ShipAddress
-import retrofit2.http.Body
 import rx.Observable
 import javax.inject.Inject
 
@@ -22,11 +21,11 @@ class ShipAddressRepository @Inject constructor() {
                 .deleteShipAddress(DeleteShipAddressReq(id))
     }
 
-    fun editShipAddress(id: Int, shipUserName: String, shipUserMobile: String, shipAddress: String,
-                        shipIsDefault: Int): Observable<BaseResp<String>> {
+    fun editShipAddress(address: ShipAddress): Observable<BaseResp<String>> {
         return RetrofitFactory.instance.create(ShipAddressApi::class.java)
                 .editShipAddress(EditShipAddressReq(
-                        id, shipUserName, shipUserMobile, shipAddress, shipIsDefault
+                        address.id, address.shipUserName, address.shipUserMobile,
+                        address.shipAddress, address.shipIsDefault
                 ))
     }
 

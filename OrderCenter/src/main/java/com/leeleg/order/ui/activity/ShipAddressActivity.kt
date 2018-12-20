@@ -15,6 +15,7 @@ import com.leeleg.order.presenter.ShipAddressPresenter
 import com.leeleg.order.presenter.view.ShipAddressView
 import kotlinx.android.synthetic.main.activity_address.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class ShipAddressActivity : BaseMvpActivity<ShipAddressPresenter>(), ShipAddressView {
 
@@ -43,6 +44,7 @@ class ShipAddressActivity : BaseMvpActivity<ShipAddressPresenter>(), ShipAddress
 
         mAdapter.mOptClickListener = object : ShipAddressAdapter.OnOptClickListener {
             override fun onSetDefault(address: ShipAddress) {
+                mPresenter.setDefaultShipAddress(address)
             }
 
             override fun onEdit(address: ShipAddress) {
@@ -74,5 +76,10 @@ class ShipAddressActivity : BaseMvpActivity<ShipAddressPresenter>(), ShipAddress
         } else {
             mMultiStateView.viewState = MultiStateView.VIEW_STATE_EMPTY
         }
+    }
+
+    override fun onSetDefaultResult(result: Boolean) {
+        toast("设置成功")
+        loadData()
     }
 }

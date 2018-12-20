@@ -5,4 +5,5 @@ import com.leeleg.order.data.protocol.ShipAddress
 
 interface ShipAddressView : BaseView{
     fun onGetShipAddressResult(result: MutableList<ShipAddress>?)
+    fun onSetDefaultResult(result: Boolean)
 }
