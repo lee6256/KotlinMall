@@ -14,6 +14,7 @@ import com.kotlin.provider.common.ProviderConstant
 import com.kotlin.provider.common.isLogined
 import com.kotlin.user.ui.activity.LoginActivity
 import com.kotlin.user.ui.activity.UserInfoActivity
+import com.leeleg.order.ui.activity.ShipAddressActivity
 import kotlinx.android.synthetic.main.fragment_me.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -33,6 +34,7 @@ class MeFragment : BaseFragment(), View.OnClickListener {
         mUserIconIv.onClick(this)
         mUserNameTv.onClick(this)
 
+        mAddressTv.onClick(this)
         mSettingTv.onClick(this)
     }
 
@@ -63,7 +65,9 @@ class MeFragment : BaseFragment(), View.OnClickListener {
                     startActivity<LoginActivity>()
                 }
             }
-
+            R.id.mAddressTv -> {
+                startActivity<ShipAddressActivity>()
+            }
             R.id.mSettingTv -> {
                 startActivity<SettingActivity>()
             }
