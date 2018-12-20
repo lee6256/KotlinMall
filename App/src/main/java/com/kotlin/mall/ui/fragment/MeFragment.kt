@@ -11,9 +11,12 @@ import com.kotlin.base.utils.AppPrefsUtils
 import com.kotlin.mall.R
 import com.kotlin.mall.ui.activity.SettingActivity
 import com.kotlin.provider.common.ProviderConstant
+import com.kotlin.provider.common.afterLogin
 import com.kotlin.provider.common.isLogined
-import com.kotlin.user.ui.activity.LoginActivity
 import com.kotlin.user.ui.activity.UserInfoActivity
+import com.leeleg.order.common.OrderConstant
+import com.leeleg.order.common.OrderStatus
+import com.leeleg.order.ui.activity.OrderActivity
 import com.leeleg.order.ui.activity.ShipAddressActivity
 import kotlinx.android.synthetic.main.fragment_me.*
 import org.jetbrains.anko.support.v4.startActivity
@@ -33,6 +36,11 @@ class MeFragment : BaseFragment(), View.OnClickListener {
     private fun initView() {
         mUserIconIv.onClick(this)
         mUserNameTv.onClick(this)
+
+        mAllOrderTv.onClick(this)
+        mWaitPayOrderTv.onClick(this)
+        mWaitConfirmOrderTv.onClick(this)
+        mCompleteOrderTv.onClick(this)
 
         mAddressTv.onClick(this)
         mSettingTv.onClick(this)
@@ -58,16 +66,46 @@ class MeFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
+            // 用户头像
             R.id.mUserIconIv, R.id.mUserNameTv -> {
-                if (isLogined()) {
+                afterLogin {
                     startActivity<UserInfoActivity>()
-                } else {
-                    startActivity<LoginActivity>()
                 }
             }
+            // 待付款
+            R.id.mWaitPayOrderTv -> {
+                afterLogin {
+                    startActivity<OrderActivity>(
+                            OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_PAY)
+                }
+            }
+            // 待收货
+            R.id.mWaitConfirmOrderTv -> {
+                afterLogin {
+                    startActivity<OrderActivity>(
+                            OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_CONFIRM
+                    )
+                }
+            }
+            // 已完成
+            R.id.mCompleteOrderTv -> {
+                afterLogin {
+                    startActivity<OrderActivity>(
+                            OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_COMPLETED
+                    )
+                }
+            }
+            // 我的订单
+            R.id.mAllOrderTv -> {
+                afterLogin {
+                    startActivity<OrderActivity>()
+                }
+            }
+            // 收货地址管理
             R.id.mAddressTv -> {
                 startActivity<ShipAddressActivity>()
             }
+            // 设置
             R.id.mSettingTv -> {
                 startActivity<SettingActivity>()
             }
