@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.alibaba.android.arouter.launcher.ARouter
 import com.bigkoo.alertview.AlertView
 import com.bigkoo.alertview.OnItemClickListener
 import com.kennyc.view.MultiStateView
@@ -13,6 +14,7 @@ import com.kotlin.base.ui.adapter.BaseRecyclerViewAdapter
 import com.kotlin.base.ui.fragment.BaseMvpFragment
 import com.kotlin.order.ui.adapter.OrderAdapter
 import com.kotlin.provider.common.ProviderConstant
+import com.kotlin.provider.router.RouterPath
 import com.leeleg.order.R
 import com.leeleg.order.common.OrderConstant
 import com.leeleg.order.data.protocol.Order
@@ -57,7 +59,13 @@ class OrderFragment : BaseMvpFragment<OrderListPresenter>(), OrderListView {
         mAdapter.listener = object : OrderAdapter.OnOptClickListener {
             override fun onOptClick(optType: Int, order: Order) {
                 when (optType) {
-                    OrderConstant.OPT_ORDER_PAY -> {}
+                    OrderConstant.OPT_ORDER_PAY -> {
+                        ARouter.getInstance()
+                                .build(RouterPath.PaySDK.PATH_PAY)
+                                .withInt(ProviderConstant.KEY_ORDER_ID, order.id)
+                                .withLong(ProviderConstant.KEY_ORDER_PRICE, order.totalPrice)
+                                .navigation()
+                    }
                     OrderConstant.OPT_ORDER_CONFIRM -> {
                         mPresenter.confirmOrder(order.id)
                     }
