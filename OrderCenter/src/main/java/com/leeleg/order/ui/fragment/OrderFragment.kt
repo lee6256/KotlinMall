@@ -9,8 +9,10 @@ import com.bigkoo.alertview.AlertView
 import com.bigkoo.alertview.OnItemClickListener
 import com.kennyc.view.MultiStateView
 import com.kotlin.base.ext.startLoading
+import com.kotlin.base.ui.adapter.BaseRecyclerViewAdapter
 import com.kotlin.base.ui.fragment.BaseMvpFragment
 import com.kotlin.order.ui.adapter.OrderAdapter
+import com.kotlin.provider.common.ProviderConstant
 import com.leeleg.order.R
 import com.leeleg.order.common.OrderConstant
 import com.leeleg.order.data.protocol.Order
@@ -18,7 +20,9 @@ import com.leeleg.order.injection.component.DaggerOrderComponent
 import com.leeleg.order.injection.module.OrderModule
 import com.leeleg.order.presenter.OrderListPresenter
 import com.leeleg.order.presenter.view.OrderListView
+import com.leeleg.order.ui.activity.OrderDetailActivity
 import kotlinx.android.synthetic.main.fragment_order.*
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 
 class OrderFragment : BaseMvpFragment<OrderListPresenter>(), OrderListView {
@@ -63,6 +67,12 @@ class OrderFragment : BaseMvpFragment<OrderListPresenter>(), OrderListView {
                 }
             }
         }
+
+        mAdapter.setOnItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener<Order> {
+            override fun onItemClick(item: Order, position: Int) {
+                startActivity<OrderDetailActivity>(ProviderConstant.KEY_ORDER_ID to item.id)
+            }
+        })
     }
 
     private fun showCancelDialog(order: Order) {
