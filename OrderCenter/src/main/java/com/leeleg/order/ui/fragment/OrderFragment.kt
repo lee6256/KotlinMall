@@ -51,6 +51,11 @@ class OrderFragment : BaseMvpFragment<OrderListPresenter>(), OrderListView {
         loadData()
     }
 
+    override fun onStart() {
+        super.onStart()
+        loadData()
+    }
+
     private fun initView() {
         mOrderRv.layoutManager = LinearLayoutManager(activity)
         mAdapter = OrderAdapter(activity)
