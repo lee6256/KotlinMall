@@ -2,10 +2,12 @@ package com.kotlin.user.ui.activity
 
 import android.os.Bundle
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotlin.base.ext.enable
 import com.kotlin.base.ext.onClick
 import com.kotlin.base.ui.activity.BaseMvpActivity
+import com.kotlin.provider.PushProvider
 import com.kotlin.provider.router.RouterPath
 import com.kotlin.user.R
 import com.kotlin.user.data.protocol.UserInfo
@@ -20,6 +22,10 @@ import org.jetbrains.anko.toast
 
 @Route(path = RouterPath.UserCenter.PATH_LOGIN)
 class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClickListener {
+
+    @Autowired(name = RouterPath.MessageCenter.PATH_MESSAGE_PUSH)
+    @JvmField
+    var mPushProvider: PushProvider? = null
 
     override fun injectComponent() {
         DaggerUserComponent.builder()
@@ -56,7 +62,7 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView, View.OnClick
         when(v.id) {
             R.id.mRightTv -> { startActivity<RegisterActivity>() }
             R.id.mForgetPwdTv -> { startActivity<ForgetPwdActivity>() }
-            R.id.mLoginBtn -> { mPresenter.login(mMobileEt.text.toString(), mPwdEt.text.toString(), "") }
+            R.id.mLoginBtn -> { mPresenter.login(mMobileEt.text.toString(), mPwdEt.text.toString(), mPushProvider?.getPushId()?: "") }
         }
     }
 

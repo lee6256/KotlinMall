@@ -18,4 +18,10 @@ object RouterPath {
             const val PATH_PAY = "/paySDK/pay"
         }
     }
+
+    class MessageCenter {
+        companion object {
+            const val PATH_MESSAGE_PUSH = "/messageCenter/push"
+        }
+    }
 }
