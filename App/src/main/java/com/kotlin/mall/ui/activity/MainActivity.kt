@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.eightbitlab.rxbus.Bus
 import com.eightbitlab.rxbus.registerInBus
+import com.kotlin.base.common.AppManager
 import com.kotlin.base.utils.AppPrefsUtils
 import com.kotlin.goods.common.GoodsConstant
 import com.kotlin.goods.event.UpdateCartSizeEvent
@@ -17,11 +18,14 @@ import com.kotlin.mall.ui.fragment.MeFragment
 import com.kotlin.message.ui.fragment.MessageFragment
 import com.kotlin.provider.event.MessageBadgeEvent
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.toast
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-     private val mStack = Stack<Fragment>()
+    private var pressTime: Long = 0
+
+    private val mStack = Stack<Fragment>()
 
     private val mHomeFragment by lazy { HomeFragment() }
     private val mCategoryFragment by lazy { CategoryFragment() }
@@ -97,6 +101,16 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Bus.unregister(this)
+    }
+
+    override fun onBackPressed() {
+        val time = System.currentTimeMillis()
+        if (time - pressTime > 2000) {
+            toast("再点击一次退出")
+            pressTime = time
+        } else {
+            AppManager.instance.exitApp(this)
+        }
     }
 
     private fun loadCartSize() {

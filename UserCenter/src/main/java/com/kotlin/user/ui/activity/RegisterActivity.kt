@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_register.*
 import org.jetbrains.anko.toast
 
 class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView, View.OnClickListener {
-    private var pressTime: Long = 0
+
     override fun injectComponent() {
         DaggerUserComponent.builder()
                 .activityComponent(activityComponent)
@@ -44,16 +44,6 @@ class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView, Vie
 
         mVerifyCodeBtn.onClick(this)
         mRegisterBtn.onClick(this)
-    }
-
-    override fun onBackPressed() {
-        val time = System.currentTimeMillis()
-        if (time - pressTime > 2000) {
-            toast("再点击一次退出")
-            pressTime = time
-        } else {
-            AppManager.instance.exitApp(this)
-        }
     }
 
     override fun onClick(v: View) {
