@@ -10,7 +10,7 @@ import com.kotlin.base.injection.module.AppModule
 /**
  * Created by HelloWorld on 2018/5/30.
  */
-class BaseApplication: Application() {
+open class BaseApplication: Application() {
 
     lateinit var appComponent: AppComponent
 

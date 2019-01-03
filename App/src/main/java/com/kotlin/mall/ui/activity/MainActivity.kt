@@ -14,6 +14,8 @@ import com.kotlin.goods.ui.fragment.CategoryFragment
 import com.kotlin.mall.R
 import com.kotlin.mall.ui.fragment.HomeFragment
 import com.kotlin.mall.ui.fragment.MeFragment
+import com.kotlin.message.ui.fragment.MessageFragment
+import com.kotlin.provider.event.MessageBadgeEvent
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -24,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private val mHomeFragment by lazy { HomeFragment() }
     private val mCategoryFragment by lazy { CategoryFragment() }
     private val mCartFragment by lazy { CartFragment() }
-    private val mMsgFragment by lazy { HomeFragment() }
+    private val mMsgFragment by lazy { MessageFragment() }
     private val mMeFragment by lazy { MeFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +84,13 @@ class MainActivity : AppCompatActivity() {
         Bus.observe<UpdateCartSizeEvent>()
                 .subscribe {
                     loadCartSize()
+                }.registerInBus(this)
+        Bus.observe<MessageBadgeEvent>()
+                .subscribe {
+                    t : MessageBadgeEvent ->
+                    run {
+                        mBottomNavBar.checkMsgBadge(t.isVisible)
+                    }
                 }.registerInBus(this)
     }
 

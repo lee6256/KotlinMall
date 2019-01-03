@@ -16,7 +16,7 @@ import com.leeleg.order.presenter.view.OrderDetailView
 import com.leeleg.order.ui.adapter.OrderGoodsAdapter
 import kotlinx.android.synthetic.main.activity_order_detail.*
 
-@Route(path = RouterPath.OrderCenter.PATH_ORDER_CONFIRM)
+@Route(path = RouterPath.MessageCenter.PATH_MESSAGE_ORDER)
 class OrderDetailActivity : BaseMvpActivity<OrderDetailPresenter>(), OrderDetailView {
     private lateinit var mAdapter: OrderGoodsAdapter
 
