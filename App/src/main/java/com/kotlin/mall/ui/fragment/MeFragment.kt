@@ -101,9 +101,11 @@ class MeFragment : BaseFragment(), View.OnClickListener {
                     startActivity<OrderActivity>()
                 }
             }
-            // 收货地址管理
+            // 收货管理
             R.id.mAddressTv -> {
-                startActivity<ShipAddressActivity>()
+                afterLogin {
+                    startActivity<ShipAddressActivity>()
+                }
             }
             // 设置
             R.id.mSettingTv -> {
