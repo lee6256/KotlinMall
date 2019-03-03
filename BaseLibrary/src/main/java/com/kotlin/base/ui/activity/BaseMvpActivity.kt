@@ -18,18 +18,6 @@ import javax.inject.Inject
  */
 abstract class BaseMvpActivity<T: BasePresenter<*>>: BaseActivity(), BaseView {
 
-    override fun showLoading() {
-        mLoadingDialog.showLoading()
-    }
-
-    override fun hideLoading() {
-        mLoadingDialog.hideLoading()
-    }
-
-    override fun onError(text: String) {
-        toast(text)
-    }
-
     @Inject
     lateinit var mPresenter: T
 
@@ -57,4 +45,15 @@ abstract class BaseMvpActivity<T: BasePresenter<*>>: BaseActivity(), BaseView {
                 .build()
     }
 
+    override fun showLoading() {
+        mLoadingDialog.showLoading()
+    }
+
+    override fun hideLoading() {
+        mLoadingDialog.hideLoading()
+    }
+
+    override fun onError(text: String) {
+        toast(text)
+    }
 }
